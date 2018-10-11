@@ -29,7 +29,9 @@ public class BeersRepository {
     private final static Function<List<Beer>, List<String>> mapBeersToManufacturers = (List<Beer> beers) -> {
         Set<String> filtered = new HashSet<>();
         for (Beer beer : beers) {
-            filtered.add(beer.getManufacturer());
+            if(beer.getManufacturer() != null){
+                filtered.add(beer.getManufacturer());
+            }
         }
         String[] strings = filtered.toArray(new String[0]);
         Arrays.sort(strings);
