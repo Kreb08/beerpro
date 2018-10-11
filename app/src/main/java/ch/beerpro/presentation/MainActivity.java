@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity
         implements BeerCategoriesFragment.OnItemSelectedListener, BeerManufacturersFragment.OnItemSelectedListener {
 
     /**
+     * Timo was here!
+     */
+
+    /**
      * We use ButterKnife's view injection instead of having to call findViewById repeatedly.
      */
     @BindView(R.id.toolbar)
