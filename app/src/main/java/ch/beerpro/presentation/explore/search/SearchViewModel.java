@@ -63,6 +63,50 @@ public class SearchViewModel extends ViewModel implements CurrentUser {
                 }
             }
         }
+
+        filtered.addAll(filterCategory(input));
+        filtered.addAll(filterManufacturer(input));
+
+        return filtered;
+    }
+
+    private static List<Beer> filterCategory(Pair<String, List<Beer>> input) {
+        String searchTerm1 = input.first;
+        List<Beer> allBeers = input.second;
+        if (Strings.isNullOrEmpty(searchTerm1)) {
+            return allBeers;
+        }
+        if (allBeers == null) {
+            return Collections.emptyList();
+        }
+        ArrayList<Beer> filtered = new ArrayList<>();
+        for (Beer beer : allBeers) {
+            if(beer.getName() != null) {
+                if(beer.getCategory().toLowerCase().contains(searchTerm1.toLowerCase())){
+                    filtered.add(beer);
+                }
+            }
+        }
+        return filtered;
+    }
+
+    private static List<Beer> filterManufacturer(Pair<String, List<Beer>> input) {
+        String searchTerm1 = input.first;
+        List<Beer> allBeers = input.second;
+        if (Strings.isNullOrEmpty(searchTerm1)) {
+            return allBeers;
+        }
+        if (allBeers == null) {
+            return Collections.emptyList();
+        }
+        ArrayList<Beer> filtered = new ArrayList<>();
+        for (Beer beer : allBeers) {
+            if(beer.getName() != null) {
+                if(beer.getManufacturer().toLowerCase().contains(searchTerm1.toLowerCase())){
+                    filtered.add(beer);
+                }
+            }
+        }
         return filtered;
     }
 
