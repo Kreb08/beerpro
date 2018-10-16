@@ -21,7 +21,7 @@ import static ch.beerpro.domain.utils.LiveDataExtensions.zip;
 public class MyBeersViewModel extends ViewModel implements CurrentUser {
 
     private static final String TAG = "MyBeersViewModel";
-    private final MutableLiveData<String> searchTerm = new MutableLiveData<>();
+    private final MutableLiveData<String[]> searchTerms = new MutableLiveData<>();
 
     private final WishlistRepository wishlistRepository;
     private final LiveData<List<MyBeer>> myFilteredBeers;
@@ -40,24 +40,80 @@ public class MyBeersViewModel extends ViewModel implements CurrentUser {
 
         LiveData<List<MyBeer>> myBeers = myBeersRepository.getMyBeers(allBeers, myWishlist, myRatings);
 
-        myFilteredBeers = map(zip(searchTerm, myBeers), MyBeersViewModel::filter);
+        myFilteredBeers = map(zip(searchTerms, myBeers), MyBeersViewModel::filter);
 
         currentUserId.setValue(getCurrentUser().getUid());
     }
 
-    private static List<MyBeer> filter(Pair<String, List<MyBeer>> input) {
-        String searchTerm1 = input.first;
+    private static List<MyBeer> filter(Pair<String[], List<MyBeer>> input) {
         List<MyBeer> myBeers = input.second;
-        if (Strings.isNullOrEmpty(searchTerm1)) {
-            return myBeers;
-        }
         if (myBeers == null) {
             return Collections.emptyList();
         }
+
+        if(input.first == null){
+            return myBeers;
+        }
+        String searchTerm1 = input.first[0];
+        String searchCatetegory = input.first[1];
+        String searchManufacturer = input.first[2];
+
+        List<MyBeer> filtered = filterSearchTerm(searchTerm1, myBeers);
+        filtered = filterCategory(searchCatetegory, filtered);
+        filtered = filterManufacturer(searchManufacturer,filtered);
+
+        return filtered;
+    }
+
+    private static List<MyBeer> filterSearchTerm(String name, List<MyBeer> beers){
+        if (Strings.isNullOrEmpty(name)) {
+            return beers;
+        }
+        if (beers == null) {
+            return Collections.emptyList();
+        }
         ArrayList<MyBeer> filtered = new ArrayList<>();
-        for (MyBeer beer : myBeers) {
-            if (beer.getBeer().getName().toLowerCase().contains(searchTerm1.toLowerCase())) {
-                filtered.add(beer);
+        for (MyBeer beer : beers) {
+            if(beer.getBeer().getName() != null) {
+                if(beer.getBeer().getName().toLowerCase().contains(name.toLowerCase())){
+                    filtered.add(beer);
+                }
+            }
+        }
+        return filtered;
+    }
+
+    private static List<MyBeer> filterCategory(String category, List<MyBeer> beers){
+        if (Strings.isNullOrEmpty(category)) {
+            return beers;
+        }
+        if (beers == null) {
+            return Collections.emptyList();
+        }
+        ArrayList<MyBeer> filtered = new ArrayList<>();
+        for (MyBeer beer : beers) {
+            if(beer.getBeer().getCategory() != null) {
+                if(beer.getBeer().getCategory().toLowerCase().contains(category.toLowerCase())){
+                    filtered.add(beer);
+                }
+            }
+        }
+        return filtered;
+    }
+
+    private static List<MyBeer> filterManufacturer(String manufacturer, List<MyBeer> beers){
+        if (Strings.isNullOrEmpty(manufacturer)) {
+            return beers;
+        }
+        if (beers == null) {
+            return Collections.emptyList();
+        }
+        ArrayList<MyBeer> filtered = new ArrayList<>();
+        for (MyBeer beer : beers) {
+            if(beer.getBeer().getManufacturer() != null) {
+                if(beer.getBeer().getManufacturer().toLowerCase().contains(manufacturer.toLowerCase())){
+                    filtered.add(beer);
+                }
             }
         }
         return filtered;
@@ -72,6 +128,10 @@ public class MyBeersViewModel extends ViewModel implements CurrentUser {
     }
 
     public void setSearchTerm(String searchTerm) {
-        this.searchTerm.setValue(searchTerm);
+        this.searchTerms.setValue(new String[]{searchTerm, null, null});
+    }
+
+    public void setSearchTerms(String[] searchTerms){
+        this.searchTerms.setValue(searchTerms);
     }
 }

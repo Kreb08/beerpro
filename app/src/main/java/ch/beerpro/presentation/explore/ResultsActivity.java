@@ -43,11 +43,16 @@ public class ResultsActivity extends AppCompatActivity
         viewPager.setSaveFromParentEnabled(false);
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         myBeersViewModel = ViewModelProviders.of(this).get(MyBeersViewModel.class);
+    }
 
-        String filter = getIntent().getExtras().getString("filter");
+    @Override
+    public void onStart(){
+        super.onStart();
+        String category = getIntent().getExtras().getString("category");
+        String manufacturer = getIntent().getExtras().getString("manufacturer");
 
-        searchViewModel.setSearchTerm(filter);
-        //myBeersViewModel.setSearchTerm(filter);
+        searchViewModel.setSearchTerms(new String[]{null, category, manufacturer});
+        myBeersViewModel.setSearchTerms(new String[]{null, category, manufacturer});
         adapter.setShowSuggestions(false);
         adapter.notifyDataSetChanged();
     }

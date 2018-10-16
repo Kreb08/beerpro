@@ -53,6 +53,9 @@ public class MyBeersFragment extends Fragment {
     }
 
     private void handleBeersChanged(List<MyBeer> beers) {
+        if(adapter == null){
+            return;
+        }
         adapter.submitList(new ArrayList<>(beers));
         if (beers.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);

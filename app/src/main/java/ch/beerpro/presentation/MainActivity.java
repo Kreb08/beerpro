@@ -132,14 +132,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBeerCategorySelected(String name) {
         Intent intent = new Intent(this, ResultsActivity.class);
-        intent.putExtra("filter", name);
+        intent.putExtra("category", name);
         startActivity(intent);
     }
 
     @Override
     public void onBeerManufacturerSelected(String name) {
         Intent intent = new Intent(this, ResultsActivity.class);
-        intent.putExtra("filter", name);
+        intent.putExtra("manufacturer", name);
         startActivity(intent);
     }
 }
