@@ -1,6 +1,5 @@
 package ch.beerpro.presentation.explore;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +10,22 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.beerpro.GlideApp;
 import ch.beerpro.R;
-import ch.beerpro.presentation.utils.BackgroundImageProvider;
-import ch.beerpro.presentation.utils.StringDiffItemCallback;
+import ch.beerpro.domain.models.Manufacturer;
+import ch.beerpro.presentation.utils.ManufacturerDiffItemCallback;
 
 
 /**
  * This class is really similar to {@link BeerCategoriesRecyclerViewAdapter} see the documentation there.
  */
 public class BeerManufacturersRecyclerViewAdapter
-        extends ListAdapter<String, BeerManufacturersRecyclerViewAdapter.ViewHolder> {
+        extends ListAdapter<Manufacturer, BeerManufacturersRecyclerViewAdapter.ViewHolder> {
 
     private final BeerManufacturersFragment.OnItemSelectedListener listener;
 
     public BeerManufacturersRecyclerViewAdapter(BeerManufacturersFragment.OnItemSelectedListener listener) {
-        super(new StringDiffItemCallback());
+        super(new ManufacturerDiffItemCallback<>());
         this.listener = listener;
     }
 
@@ -55,12 +55,13 @@ public class BeerManufacturersRecyclerViewAdapter
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(String item, int position, BeerManufacturersFragment.OnItemSelectedListener listener) {
-            content.setText(item);
-            Context resources = itemView.getContext();
-            imageView.setImageDrawable(BackgroundImageProvider.getBackgroundImage(resources, position + 10));
+        void bind(Manufacturer manufacturer, int position, BeerManufacturersFragment.OnItemSelectedListener listener) {
+            content.setText(manufacturer.getName());
+
+            GlideApp.with(itemView.getContext()).load(manufacturer.getPhoto()).into(imageView);
+
             if (listener != null) {
-                itemView.setOnClickListener(v -> listener.onBeerManufacturerSelected(item));
+                itemView.setOnClickListener(v -> listener.onBeerManufacturerSelected(manufacturer.getName()));
             }
         }
     }

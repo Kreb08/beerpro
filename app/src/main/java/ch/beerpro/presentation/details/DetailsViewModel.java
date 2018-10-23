@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import ch.beerpro.data.repositories.*;
 import ch.beerpro.domain.models.Beer;
+import ch.beerpro.domain.models.Manufacturer;
 import ch.beerpro.domain.models.Rating;
 import ch.beerpro.domain.models.Wish;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,7 @@ public class DetailsViewModel extends ViewModel implements CurrentUser {
 
     private final LikesRepository likesRepository;
     private final WishlistRepository wishlistRepository;
+    private final ManufacturerRepository manufacturerRepository;
 
     public DetailsViewModel() {
         // TODO We should really be injecting these!
@@ -27,6 +29,7 @@ public class DetailsViewModel extends ViewModel implements CurrentUser {
         RatingsRepository ratingsRepository = new RatingsRepository();
         likesRepository = new LikesRepository();
         wishlistRepository = new WishlistRepository();
+        manufacturerRepository = new ManufacturerRepository();
 
         MutableLiveData<String> currentUserId = new MutableLiveData<>();
         beer = beersRepository.getBeer(beerId);
@@ -45,6 +48,10 @@ public class DetailsViewModel extends ViewModel implements CurrentUser {
 
     public LiveData<List<Rating>> getRatings() {
         return ratings;
+    }
+
+    public LiveData<Manufacturer> getManufacturers(String name) {
+        return manufacturerRepository.getManufacturerByName(name);
     }
 
     public void setBeerId(String beerId) {

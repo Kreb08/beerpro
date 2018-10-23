@@ -10,9 +10,13 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +26,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.beerpro.GlideApp;
 import ch.beerpro.R;
+import ch.beerpro.data.repositories.ManufacturerRepository;
 import ch.beerpro.domain.models.Beer;
+import ch.beerpro.domain.models.Manufacturer;
 import ch.beerpro.domain.models.Rating;
 import ch.beerpro.domain.models.Wish;
 import ch.beerpro.presentation.details.createrating.CreateRatingActivity;
@@ -39,6 +45,7 @@ public class DetailsActivity extends AppCompatActivity implements OnRatingLikedL
 
     public static final String ITEM_ID = "item_id";
     private static final String TAG = "DetailsActivity";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -74,6 +81,9 @@ public class DetailsActivity extends AppCompatActivity implements OnRatingLikedL
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.imageView2)
+    ImageView manufacturer_pic;
 
     private RatingsRecyclerViewAdapter adapter;
 
@@ -138,6 +148,8 @@ public class DetailsActivity extends AppCompatActivity implements OnRatingLikedL
         avgRating.setText(getResources().getString(R.string.fmt_avg_rating, item.getAvgRating()));
         numRatings.setText(getResources().getString(R.string.fmt_ratings, item.getNumRatings()));
         toolbar.setTitle(item.getName());
+
+        model.getManufacturers(item.getManufacturer()).observe(this, this::updateManufacturer);
     }
 
     private void updateRatings(List<Rating> ratings) {
@@ -170,6 +182,10 @@ public class DetailsActivity extends AppCompatActivity implements OnRatingLikedL
             setDrawableTint(wishlist, color);
             wishlist.setChecked(false);
         }
+    }
+
+    private void updateManufacturer(Manufacturer manufacturer){
+        GlideApp.with(this).load(manufacturer.getPhoto()).into(manufacturer_pic);
     }
 
     @Override

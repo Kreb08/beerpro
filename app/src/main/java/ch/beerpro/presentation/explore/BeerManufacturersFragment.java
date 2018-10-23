@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.beerpro.R;
+import ch.beerpro.domain.models.Manufacturer;
 import ch.beerpro.presentation.MainViewModel;
 import ch.beerpro.presentation.utils.GridSpacingItemDecoration;
 
