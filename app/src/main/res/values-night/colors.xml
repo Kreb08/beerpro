@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>fac
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryLight">#303030</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="windowBackgroundColor">#000000</color>
+    <color name="colorAccent">#ffffff</color>
+
+    <color name="colorPrimaryNight">#000000</color>
+    <color name="colorPrimaryLightNight">#212121</color>
+    <color name="colorPrimaryDarkNight">#000000</color>
+    <color name="windowBackgroundColorNight">#000000</color>
+    <color name="colorAccentNight">#ffffff</color>
+</resources>

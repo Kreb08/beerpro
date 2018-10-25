@@ -1,6 +1,7 @@
 package ch.beerpro.presentation;
 
 import android.util.Pair;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MainViewModel extends ViewModel implements CurrentUser {
 
     private static final String TAG = "MainViewModel";
+
 
     private final BeersRepository beersRepository;
     private final LikesRepository likesRepository;
